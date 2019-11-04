@@ -83,8 +83,8 @@ public class GUI extends Composite {
 		table_1.setLinesVisible(true);
 		
 		Button btnNewButton = new Button(this, SWT.NONE);
-		btnNewButton.setBounds(76, 656, 296, 30);
-		btnNewButton.setText("New Button");
+		btnNewButton.setBounds(23, 656, 978, 30);
+		btnNewButton.setText("Iniciar");
 
 	}
 
