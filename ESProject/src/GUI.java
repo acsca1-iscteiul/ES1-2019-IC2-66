@@ -16,6 +16,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
+import java.awt.Font;
 
 public class GUI extends JFrame {
 
@@ -55,13 +56,16 @@ public class GUI extends JFrame {
 		setContentPane(contentPane);
 		
 		JLabel lblFifcheiro = new JLabel("Ficheiro:");
+		lblFifcheiro.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 		
 		textField = new JTextField();
 		textField.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("LOC:");
+		lblNewLabel.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 		
 		JLabel lblNewLabel_1 = new JLabel("CYCLO:");
+		lblNewLabel_1.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 		
 		textField_1 = new JTextField();
 		textField_1.setColumns(10);
@@ -70,6 +74,7 @@ public class GUI extends JFrame {
 		textField_2.setColumns(10);
 		
 		table = new JTable();
+		table.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null},
@@ -83,6 +88,7 @@ public class GUI extends JFrame {
 		));
 		
 		table_1 = new JTable();
+		table_1.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
 		table_1.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null, null, null, null},
@@ -96,8 +102,10 @@ public class GUI extends JFrame {
 		));
 		
 		JButton btnIniciar = new JButton("Iniciar");
+		btnIniciar.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 		
 		JLabel lblOperadorLgico = new JLabel("Operador L\u00F3gico:");
+		lblOperadorLgico.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 		
 		JComboBox comboBox = new JComboBox();
 		comboBox.setForeground(Color.BLACK);
@@ -107,18 +115,14 @@ public class GUI extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+						.addComponent(table_1, GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
+						.addComponent(btnIniciar, GroupLayout.DEFAULT_SIZE, 818, Short.MAX_VALUE)
 						.addGroup(gl_contentPane.createSequentialGroup()
-							.addComponent(table_1, GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-							.addComponent(btnIniciar, GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
-							.addContainerGap())
-						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
-							.addComponent(lblFifcheiro, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
-							.addGap(83)
+							.addComponent(lblFifcheiro, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 367, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(table, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
 								.addGroup(gl_contentPane.createSequentialGroup()
@@ -136,8 +140,8 @@ public class GUI extends JFrame {
 											.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(textField_1, 0, 85, Short.MAX_VALUE)
-											.addGap(34)))))
-							.addContainerGap())))
+											.addGap(34)))))))
+					.addContainerGap())
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
@@ -155,7 +159,7 @@ public class GUI extends JFrame {
 						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(25)
 					.addComponent(table, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 244, Short.MAX_VALUE)
 					.addComponent(table_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnIniciar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
