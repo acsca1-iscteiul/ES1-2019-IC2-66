@@ -38,7 +38,7 @@ public class Imp {
 
 		// if button is clicked
 
-		if(excelChooser=JFileChooser.APPROVE_OPTION)
+		if(excelChooser==JFileChooser.APPROVE_OPTION)
 		{
 			try {
 				excelFile = excelFileChooser.getSelectedFile();
