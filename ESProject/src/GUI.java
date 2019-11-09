@@ -1,95 +1,166 @@
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
 
-public class GUI extends Composite {
-	private Text text;
-	private Text text_1;
-	private Text text_2;
-	private Table table;
-	private Table table_1;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import java.awt.Color;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.border.CompoundBorder;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+
+public class GUI extends JFrame {
+
+	private JPanel contentPane;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTable table;
+	private JTable table_1;
 
 	/**
-	 * Create the composite.
-	 * @param parent
-	 * @param style
+	 * Launch the application.
 	 */
-	public GUI(Composite parent, int style) {
-		super(parent, style);
-		setToolTipText("");
-		
-		text = new Text(this, SWT.BORDER);
-		text.setBounds(76, 7, 368, 26);
-		
-		Label lblFicheiro = new Label(this, SWT.NONE);
-		lblFicheiro.setBounds(10, 10, 60, 20);
-		lblFicheiro.setText("Ficheiro:");
-		
-		Button btnPesquisar = new Button(this, SWT.NONE);
-		btnPesquisar.setBounds(450, 7, 81, 30);
-		btnPesquisar.setText("Pesquisar");
-		
-		Label lblNewLabel = new Label(this, SWT.NONE);
-		lblNewLabel.setBounds(592, 13, 34, 20);
-		lblNewLabel.setText("LOC:");
-		
-		Label lblNewLabel_1 = new Label(this, SWT.NONE);
-		lblNewLabel_1.setBounds(589, 47, 124, 20);
-		lblNewLabel_1.setText("Operador L\u00F3gico:");
-		
-		Label lblNewLabel_2 = new Label(this, SWT.NONE);
-		lblNewLabel_2.setBounds(807, 13, 45, 20);
-		lblNewLabel_2.setText("CYCLO:");
-		
-		text_1 = new Text(this, SWT.BORDER);
-		text_1.setBounds(632, 10, 81, 26);
-		
-		text_2 = new Text(this, SWT.BORDER);
-		text_2.setBounds(869, 11, 81, 26);
-		
-		Combo combo = new Combo(this, SWT.NONE);
-		combo.setItems(new String[] {"AND", "OR"});
-		combo.setBounds(722, 44, 228, 28);
-		
-		table = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
-		table.setBounds(592, 94, 409, 272);
-		table.setHeaderVisible(true);
-		table.setLinesVisible(true);
-		
-		TableColumn tblclmnNewColumn = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn.setWidth(100);
-		tblclmnNewColumn.setText("New Column");
-		
-		TableColumn tblclmnNewColumn_1 = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn_1.setWidth(100);
-		tblclmnNewColumn_1.setText("New Column");
-		
-		TableColumn tblclmnNewColumn_2 = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn_2.setWidth(100);
-		tblclmnNewColumn_2.setText("New Column");
-		
-		TableColumn tblclmnNewColumn_3 = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn_3.setWidth(100);
-		tblclmnNewColumn_3.setText("New Column");
-		
-		table_1 = new Table(this, SWT.BORDER | SWT.FULL_SELECTION);
-		table_1.setBounds(23, 445, 978, 205);
-		table_1.setHeaderVisible(true);
-		table_1.setLinesVisible(true);
-		
-		Button btnNewButton = new Button(this, SWT.NONE);
-		btnNewButton.setBounds(23, 656, 978, 30);
-		btnNewButton.setText("Iniciar");
-
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					GUI frame = new GUI();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
-	@Override
-	protected void checkSubclass() {
-		// Disable the check that prevents subclassing of SWT components
+	/**
+	 * Create the frame.
+	 */
+	public GUI() {
+		setTitle("ESProject");
+		setBackground(Color.WHITE);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 870, 566);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		
+		JLabel lblFifcheiro = new JLabel("Ficheiro:");
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		
+		JLabel lblNewLabel = new JLabel("LOC:");
+		
+		JLabel lblNewLabel_1 = new JLabel("CYCLO:");
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+				{null, null, null},
+			},
+			new String[] {
+				"New column", "New column", "New column"
+			}
+		));
+		
+		table_1 = new JTable();
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null},
+				{null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"New column", "New column", "New column", "New column", "New column", "New column", "New column"
+			}
+		));
+		
+		JButton btnIniciar = new JButton("Iniciar");
+		
+		JLabel lblOperadorLgico = new JLabel("Operador L\u00F3gico:");
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setForeground(Color.BLACK);
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"AND", "OR"}));
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addComponent(table_1, GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addComponent(btnIniciar, GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
+							.addContainerGap())
+						.addGroup(Alignment.TRAILING, gl_contentPane.createSequentialGroup()
+							.addComponent(lblFifcheiro, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(textField, GroupLayout.DEFAULT_SIZE, 268, Short.MAX_VALUE)
+							.addGap(83)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(table, Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE)
+								.addGroup(gl_contentPane.createSequentialGroup()
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+										.addGroup(gl_contentPane.createSequentialGroup()
+											.addComponent(lblOperadorLgico)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_contentPane.createSequentialGroup()
+											.addComponent(lblNewLabel)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+											.addGap(29)
+											.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(textField_1, 0, 85, Short.MAX_VALUE)
+											.addGap(34)))))
+							.addContainerGap())))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblFifcheiro, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel)
+						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNewLabel_1)
+						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblOperadorLgico)
+						.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(25)
+					.addComponent(table, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, 250, Short.MAX_VALUE)
+					.addComponent(table_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnIniciar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+					.addGap(13))
+		);
+		contentPane.setLayout(gl_contentPane);
 	}
 }
