@@ -32,16 +32,17 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import javax.swing.JScrollPane;
+import java.awt.ScrollPane;
 
 public class GUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTable table;
-	private JTable table_1;
-	private JTable table_2;
+	private JTextField TF_CYCLO;
+	private JTextField TF_LOC;
+	private JTable tabela_info;
+	private JTable tabela_resultado;
+	private JTable tabela_excel;
 
 	/**
 	 * Launch the application.
@@ -71,27 +72,24 @@ public class GUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
-		JLabel lblFifcheiro = new JLabel("Ficheiro:");
-		lblFifcheiro.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
+		JLabel label_ficheiro = new JLabel("Ficheiro:");
+		label_ficheiro.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 
-		textField = new JTextField();
-		textField.setColumns(10);
+		JLabel label_LOC = new JLabel("LOC:");
+		label_LOC.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 
-		JLabel lblNewLabel = new JLabel("LOC:");
-		lblNewLabel.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
+		JLabel label_CYCLO = new JLabel("CYCLO:");
+		label_CYCLO.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 
-		JLabel lblNewLabel_1 = new JLabel("CYCLO:");
-		lblNewLabel_1.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
+		TF_CYCLO = new JTextField();
+		TF_CYCLO.setColumns(10);
 
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
+		TF_LOC = new JTextField();
+		TF_LOC.setColumns(10);
 
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-
-		table = new JTable();
-		table.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
-		table.setModel(new DefaultTableModel(
+		tabela_info = new JTable();
+		tabela_info.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
+		tabela_info.setModel(new DefaultTableModel(
 				new Object[][] {
 					{null, null, null},
 					{null, null, null},
@@ -103,9 +101,9 @@ public class GUI extends JFrame {
 				}
 				));
 
-		table_1 = new JTable();
-		table_1.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
-		table_1.setModel(new DefaultTableModel(
+		tabela_resultado = new JTable();
+		tabela_resultado.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
+		tabela_resultado.setModel(new DefaultTableModel(
 				new Object[][] {
 					{null, null, null, null, null, null, null},
 					{null, null, null, null, null, null, null},
@@ -117,27 +115,25 @@ public class GUI extends JFrame {
 				}
 				));
 
-		JButton btnIniciar = new JButton("Iniciar");
-		btnIniciar.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
+		JButton botao_iniciar = new JButton("Iniciar");
+		botao_iniciar.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 
-		JLabel lblOperadorLgico = new JLabel("Operador L\u00F3gico:");
-		lblOperadorLgico.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
+		JLabel label_OL = new JLabel("Operador L\u00F3gico:");
+		label_OL.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setForeground(Color.BLACK);
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"AND", "OR"}));
-		
+		JComboBox CB_OL = new JComboBox();
+		CB_OL.setForeground(Color.BLACK);
+		CB_OL.setModel(new DefaultComboBoxModel(new String[] {"AND", "OR"}));
+
 		DefaultTableModel model = new DefaultTableModel();
-		model.addColumn("Code");
-        model.addColumn("Name");
-        model.addColumn("Quantity");
-        model.addColumn("Unit Price");
-        model.addColumn("Price");
-		table_2 = new JTable(model);
-		table_2.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
+		//		model.addColumn("Code");
+		//		model.addColumn("Name");
+		//		model.addColumn("Quantity");
+		//		model.addColumn("Unit Price");
+		//		model.addColumn("Price");
 
-		JButton btnNewButton = new JButton("Pesquisar");
-		btnNewButton.addMouseListener(new MouseAdapter() {
+		JButton botao_pesquisar = new JButton("Pesquisar");
+		botao_pesquisar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
@@ -172,19 +168,28 @@ public class GUI extends JFrame {
 						XSSFSheet excelSheet = excelJTableImport.getSheetAt(0);
 
 						// looping pelas linhas e colunas
-
+						boolean first_line=true;
 						for (int row = 0; row < excelSheet.getLastRowNum(); row++) {
 							XSSFRow excelRow = excelSheet.getRow(row);
+							XSSFCell[] cells = new XSSFCell[excelRow.getLastCellNum()];
+							for(int i=0; i<excelRow.getLastCellNum(); i++) {
+								//							XSSFCell excelName = excelRow.getCell(0);
+								//							XSSFCell excelGender = excelRow.getCell(1);
+								//							XSSFCell excelProgrammingLanguage = excelRow.getCell(2);
+								//							XSSFCell excelSubject = excelRow.getCell(3);
+								//							XSSFCell excelImage = excelRow.getCell(4);
+								cells[i]=excelRow.getCell(i);
+							}
+							if(first_line) {
+								for (XSSFCell xssfCell : cells) {
+									model.addColumn(xssfCell);
+								}
+								first_line=false;
+							}
+							else
+								model.addRow(cells);
 
-							XSSFCell excelName = excelRow.getCell(0);
-							XSSFCell excelGender = excelRow.getCell(1);
-							XSSFCell excelProgrammingLanguage = excelRow.getCell(2);
-							XSSFCell excelSubject = excelRow.getCell(3);
-							XSSFCell excelImage = excelRow.getCell(4);
-
-							model.addRow(new Object[] { excelName, excelGender, excelProgrammingLanguage, excelSubject, excelImage });
-
-							JOptionPane.showMessageDialog(null, "IMPORTED SUCCESSFULLY!");
+							//							JOptionPane.showMessageDialog(null, "IMPORTED SUCCESSFULLY!");
 
 						}
 					} catch (FileNotFoundException ex) {
@@ -213,77 +218,81 @@ public class GUI extends JFrame {
 			}
 
 		});
-		btnNewButton.setFont(new Font("Verdana Pro", Font.PLAIN, 16));
-		btnNewButton.addActionListener(new ActionListener() {
+		botao_pesquisar.setFont(new Font("Verdana Pro", Font.PLAIN, 16));
+		botao_pesquisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
-		
+
+		JScrollPane scrollPane = new JScrollPane();
+
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
+				gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addComponent(table_1, GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE)
-						.addComponent(btnIniciar, GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+								.addComponent(tabela_resultado, GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE)
+								.addComponent(botao_iniciar, GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE)
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(lblFifcheiro, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(textField, GroupLayout.DEFAULT_SIZE, 278, Short.MAX_VALUE)
-									.addGap(18)
-									.addComponent(btnNewButton)
-									.addGap(5))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGap(12)
-									.addComponent(table_2, GroupLayout.PREFERRED_SIZE, 456, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.RELATED)))
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addComponent(lblOperadorLgico)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
-									.addGroup(gl_contentPane.createSequentialGroup()
-										.addGap(17)
-										.addComponent(lblNewLabel)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
-										.addPreferredGap(ComponentPlacement.UNRELATED)
-										.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addPreferredGap(ComponentPlacement.RELATED)
-										.addComponent(textField_1, 0, 85, Short.MAX_VALUE)
-										.addGap(34)))
-								.addComponent(table, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE))))
-					.addGap(0))
-		);
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane.createSequentialGroup()
+														.addComponent(label_ficheiro, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addComponent(botao_pesquisar, GroupLayout.DEFAULT_SIZE, 317, Short.MAX_VALUE)
+														.addGap(93))
+												.addGroup(gl_contentPane.createSequentialGroup()
+														.addGap(12)
+														.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 421, Short.MAX_VALUE)
+														.addGap(35)))
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+														.addGroup(gl_contentPane.createSequentialGroup()
+																.addComponent(label_OL)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(CB_OL, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE))
+														.addGroup(gl_contentPane.createSequentialGroup()
+																.addGap(17)
+																.addComponent(label_LOC)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(TF_LOC, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)
+																.addPreferredGap(ComponentPlacement.UNRELATED)
+																.addComponent(label_CYCLO, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																.addPreferredGap(ComponentPlacement.RELATED)
+																.addComponent(TF_CYCLO, 0, 85, Short.MAX_VALUE)
+																.addGap(34)))
+												.addComponent(tabela_info, GroupLayout.PREFERRED_SIZE, 304, GroupLayout.PREFERRED_SIZE))))
+						.addGap(0))
+				);
 		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblNewLabel_1)
-						.addComponent(textField_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblFifcheiro, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnNewButton)
-						.addComponent(textField_2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNewLabel))
-					.addGap(18)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(table_2, GroupLayout.PREFERRED_SIZE, 324, GroupLayout.PREFERRED_SIZE)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblOperadorLgico)
-								.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(12)
-							.addComponent(table, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
-					.addPreferredGap(ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
-					.addComponent(table_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnIniciar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(label_CYCLO)
+								.addComponent(TF_CYCLO, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label_ficheiro, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+								.addComponent(TF_LOC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label_LOC)
+								.addComponent(botao_pesquisar))
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addGap(18)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+												.addComponent(label_OL)
+												.addComponent(CB_OL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGap(12)
+										.addComponent(tabela_info, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+								.addGroup(gl_contentPane.createSequentialGroup()
+										.addGap(28)
+										.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)))
+						.addGap(18)
+						.addComponent(tabela_resultado, GroupLayout.PREFERRED_SIZE, 64, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(botao_iniciar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap())
+				);
+		tabela_excel = new JTable(model);
+		scrollPane.setViewportView(tabela_excel);
+		tabela_excel.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
 		contentPane.setLayout(gl_contentPane);
 	}
 }
