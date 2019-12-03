@@ -28,6 +28,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -43,6 +44,10 @@ public class GUI extends JFrame {
 	private JTable tabela_info;
 	private JTable tabela_resultado;
 	private JTable tabela_excel;
+	private int locInt;
+	private int cycloInt;
+	private XSSFCell[] cells;
+	private XSSFRow excelRow;
 
 	/**
 	 * Launch the application.
@@ -117,6 +122,23 @@ public class GUI extends JFrame {
 
 		JButton botao_iniciar = new JButton("Iniciar");
 		botao_iniciar.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
+		botao_iniciar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				locInt = Integer.parseInt(TF_LOC.getText());
+				cycloInt = Integer.parseInt(TF_CYCLO.getText());
+				
+				for (int i =0 ; i<cells.length; i++) {
+					CellReference locReference = new CellReference("LOC");
+				
+						
+					
+				}
+				
+			}
+		});
 
 		JLabel label_OL = new JLabel("Operador L\u00F3gico:");
 		label_OL.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
@@ -170,8 +192,8 @@ public class GUI extends JFrame {
 						// looping pelas linhas e colunas
 						boolean first_line=true;
 						for (int row = 0; row < excelSheet.getLastRowNum(); row++) {
-							XSSFRow excelRow = excelSheet.getRow(row);
-							XSSFCell[] cells = new XSSFCell[excelRow.getLastCellNum()];
+							excelRow = excelSheet.getRow(row);
+							cells = new XSSFCell[excelRow.getLastCellNum()];
 							for(int i=0; i<excelRow.getLastCellNum(); i++) {
 								//							XSSFCell excelName = excelRow.getCell(0);
 								//							XSSFCell excelGender = excelRow.getCell(1);
@@ -218,11 +240,7 @@ public class GUI extends JFrame {
 			}
 
 		});
-		botao_pesquisar.setFont(new Font("Verdana Pro", Font.PLAIN, 16));
-		botao_pesquisar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		
 
 		JScrollPane scrollPane = new JScrollPane();
 
