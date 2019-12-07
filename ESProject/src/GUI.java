@@ -34,6 +34,7 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import javax.swing.JScrollPane;
 import java.awt.ScrollPane;
+import javax.swing.JTabbedPane;
 
 public class GUI extends JFrame {
 
@@ -46,7 +47,8 @@ public class GUI extends JFrame {
 	private JTable table_iPlasma;
 	private JTable table_PMD;
 	private JTable table_Threshold;
-	private JTable table_MT_Threshold;
+	private JTable table_Results;
+	private JTable table_Threshold_results;
 
 	/**
 	 * Launch the application.
@@ -105,11 +107,24 @@ public class GUI extends JFrame {
 		CB_OL.setModel(new DefaultComboBoxModel(new String[] {"AND", "OR"}));
 
 		DefaultTableModel model = new DefaultTableModel();
-		//		model.addColumn("Code");
-		//		model.addColumn("Name");
-		//		model.addColumn("Quantity");
-		//		model.addColumn("Unit Price");
-		//		model.addColumn("Price");
+		DefaultTableModel model_iPlasma = new DefaultTableModel();
+		DefaultTableModel model_PMD = new DefaultTableModel();
+		DefaultTableModel model_Threshold = new DefaultTableModel();
+		DefaultTableModel model_Threshold_results = new DefaultTableModel();
+		DefaultTableModel model_Results = new DefaultTableModel();
+		String[] columns = {"DCI","DII","ADCI","ADII"};
+		for (String string : columns) {
+			model_iPlasma.addColumn(string);
+			model_PMD.addColumn(string);
+			model_Threshold.addColumn(string);
+		}
+		model_Threshold_results.addColumn("M_ID");
+		model_Threshold_results.addColumn("is_long_Method");
+		model_Threshold_results.addColumn("is_feature_envy");
+		model_Results.addColumn("M_ID");
+		model_Results.addColumn("iPlasma");
+		model_Results.addColumn("PMD");
+		model_Results.addColumn("Thresholds");
 
 		JButton botao_pesquisar = new JButton("Pesquisar");
 		botao_pesquisar.addMouseListener(new MouseAdapter() {
@@ -152,11 +167,6 @@ public class GUI extends JFrame {
 							XSSFRow excelRow = excelSheet.getRow(row);
 							XSSFCell[] cells = new XSSFCell[excelRow.getLastCellNum()];
 							for(int i=0; i<excelRow.getLastCellNum(); i++) {
-								//							XSSFCell excelName = excelRow.getCell(0);
-								//							XSSFCell excelGender = excelRow.getCell(1);
-								//							XSSFCell excelProgrammingLanguage = excelRow.getCell(2);
-								//							XSSFCell excelSubject = excelRow.getCell(3);
-								//							XSSFCell excelImage = excelRow.getCell(4);
 								cells[i]=excelRow.getCell(i);
 							}
 							if(first_line) {
@@ -204,53 +214,55 @@ public class GUI extends JFrame {
 		});
 
 		JScrollPane scrollPane_1 = new JScrollPane();
-		
+
 		JLabel label_ATFD = new JLabel("ATFD:");
 		label_ATFD.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
-		
+
 		JLabel label_LAA = new JLabel("LAA:");
 		label_LAA.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
-		
+
 		TF_ATFD = new JTextField();
 		TF_ATFD.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
 		TF_ATFD.setColumns(10);
-		
+
 		TF_LAA = new JTextField();
 		TF_LAA.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
 		TF_LAA.setColumns(10);
-		
-		table_iPlasma = new JTable();
-		
-		table_PMD = new JTable();
-		
-		table_Threshold = new JTable();
-		
+
 		JScrollPane scrollPane = new JScrollPane();
-		
+
 		JLabel lbl_iPlasma = new JLabel("iPlasma");
 		lbl_iPlasma.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
-		
+
 		JLabel lbl_Pmd = new JLabel("PMD");
 		lbl_Pmd.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
-		
+
 		JLabel lblThreshold = new JLabel("Threshold");
 		lblThreshold.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 
+		JScrollPane scrollPane_2 = new JScrollPane();
+
+		JScrollPane scrollPane_3 = new JScrollPane();
+
+		JScrollPane scrollPane_4 = new JScrollPane();
+
+		JScrollPane scrollPane_Thresholds = new JScrollPane();
+
 		GroupLayout gl_contentPane_2 = new GroupLayout(contentPane_2);
 		gl_contentPane_2.setHorizontalGroup(
-			gl_contentPane_2.createParallelGroup(Alignment.TRAILING)
+			gl_contentPane_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane_2.createSequentialGroup()
 					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane_2.createSequentialGroup()
 							.addComponent(label_ficheiro, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(botao_pesquisar, GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+							.addComponent(botao_pesquisar, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
 							.addGap(140))
 						.addGroup(gl_contentPane_2.createSequentialGroup()
 							.addGap(12)
-							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 432, Short.MAX_VALUE)
-							.addGap(19)))
-					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.TRAILING, false)
+							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.TRAILING)
 						.addGroup(gl_contentPane_2.createSequentialGroup()
 							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING, false)
 								.addGroup(gl_contentPane_2.createSequentialGroup()
@@ -273,41 +285,41 @@ public class GUI extends JFrame {
 										.addGroup(gl_contentPane_2.createSequentialGroup()
 											.addComponent(label_LAA)
 											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(TF_LAA, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-									.addGap(9))
+											.addComponent(TF_LAA, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE))))
 								.addGroup(gl_contentPane_2.createSequentialGroup()
 									.addGap(12)
 									.addComponent(label_OL)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(CB_OL, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)))
-							.addGap(0))
+							.addGap(9))
 						.addGroup(gl_contentPane_2.createSequentialGroup()
 							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblThreshold)
 								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lbl_iPlasma))
+									.addGap(21)
+									.addComponent(lbl_Pmd))
 								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(16)
-									.addComponent(lbl_Pmd)))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING, false)
-								.addComponent(table_PMD, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(table_iPlasma, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE))
-							.addContainerGap())
-						.addGroup(gl_contentPane_2.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(table_Threshold, GroupLayout.PREFERRED_SIZE, 290, GroupLayout.PREFERRED_SIZE)
-							.addContainerGap())))
-				.addComponent(botao_iniciar, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 842, Short.MAX_VALUE)
-				.addGroup(Alignment.LEADING, gl_contentPane_2.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 817, Short.MAX_VALUE)
-					.addGap(13))
+									.addGap(8)
+									.addComponent(lbl_iPlasma)))
+							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane_2.createSequentialGroup()
+									.addGap(32)
+									.addGroup(gl_contentPane_2.createParallelGroup(Alignment.TRAILING, false)
+										.addComponent(scrollPane_3, 0, 0, Short.MAX_VALUE)
+										.addComponent(scrollPane_4, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)))
+								.addGroup(gl_contentPane_2.createSequentialGroup()
+									.addGap(33)
+									.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 292, GroupLayout.PREFERRED_SIZE)))))
+					.addGap(9))
 				.addGroup(gl_contentPane_2.createSequentialGroup()
-					.addContainerGap(528, Short.MAX_VALUE)
-					.addComponent(lblThreshold)
-					.addGap(307))
+					.addComponent(botao_iniciar, GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
+					.addContainerGap())
+				.addGroup(gl_contentPane_2.createSequentialGroup()
+					.addGap(13)
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+					.addGap(42)
+					.addComponent(scrollPane_Thresholds, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		gl_contentPane_2.setVerticalGroup(
 			gl_contentPane_2.createParallelGroup(Alignment.LEADING)
@@ -321,10 +333,6 @@ public class GUI extends JFrame {
 						.addComponent(TF_CYCLO, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane_2.createSequentialGroup()
-							.addGap(28)
-							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 325, Short.MAX_VALUE)
-							.addGap(18))
-						.addGroup(gl_contentPane_2.createSequentialGroup()
 							.addGap(13)
 							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.BASELINE)
 								.addComponent(label_ATFD)
@@ -337,26 +345,50 @@ public class GUI extends JFrame {
 								.addComponent(CB_OL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane_2.createSequentialGroup()
+									.addGap(33)
+									.addComponent(lbl_iPlasma))
+								.addGroup(gl_contentPane_2.createSequentialGroup()
 									.addGap(18)
-									.addComponent(table_iPlasma, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-									.addGap(30)
-									.addComponent(table_PMD, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-									.addGap(27)
-									.addComponent(table_Threshold, GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE))
+									.addComponent(scrollPane_4, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane_2.createSequentialGroup()
+									.addGap(50)
+									.addComponent(lbl_Pmd))
 								.addGroup(gl_contentPane_2.createSequentialGroup()
 									.addGap(30)
-									.addComponent(lbl_iPlasma)
-									.addGap(49)
-									.addComponent(lbl_Pmd)
-									.addGap(56)
-									.addComponent(lblThreshold)))))
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-					.addGap(14)
+									.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
+							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_contentPane_2.createSequentialGroup()
+									.addGap(40)
+									.addComponent(lblThreshold))
+								.addGroup(gl_contentPane_2.createSequentialGroup()
+									.addGap(26)
+									.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))))
+						.addGroup(gl_contentPane_2.createSequentialGroup()
+							.addGap(28)
+							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+					.addGap(18)
+					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+						.addComponent(scrollPane_Thresholds, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
+						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE))
+					.addGap(13)
 					.addComponent(botao_iniciar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
 		);
-		
-		table_MT_Threshold = new JTable();
-		scrollPane.setViewportView(table_MT_Threshold);
+
+		table_Threshold_results = new JTable(model_Threshold_results);
+		scrollPane_Thresholds.setViewportView(table_Threshold_results);
+
+		table_iPlasma = new JTable(model_iPlasma);
+		scrollPane_4.setViewportView(table_iPlasma);
+
+		table_PMD = new JTable(model_PMD);
+		scrollPane_3.setViewportView(table_PMD);
+
+		table_Threshold = new JTable(model_Threshold);
+		scrollPane_2.setViewportView(table_Threshold);
+
+		table_Results = new JTable(model_Results);
+		scrollPane.setViewportView(table_Results);
 		tabela_excel = new JTable(model);
 		scrollPane_1.setViewportView(tabela_excel);
 		tabela_excel.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
