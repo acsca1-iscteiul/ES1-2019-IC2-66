@@ -38,6 +38,9 @@ public class Avaliador_Thresholds {
 				info[1]=String.valueOf(!(loc>Double.parseDouble(String.valueOf(origem.getValueAt(i, 4))) || cyclo>Double.parseDouble(String.valueOf(origem.getValueAt(i, 5)))));
 				info[2]=String.valueOf(!(atfd>Double.parseDouble(String.valueOf(origem.getValueAt(i, 6))) || laa>Double.parseDouble(String.valueOf(origem.getValueAt(i, 7)))));
 			}
+//			info[0].toUpperCase();
+//			info[1].toUpperCase();
+//			info[2].toUpperCase();
 			destino.addRow(info);
 		}
 	}

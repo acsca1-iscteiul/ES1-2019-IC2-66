@@ -218,6 +218,9 @@ public class GUI extends JFrame {
 				}
 				new Comparador_is_long_method(model, model_iPlasma, 9).start();
 				new Comparador_is_long_method(model, model_PMD, 10).start();
+				reset_tabela(model_Results);
+				reset_tabela(model_Threshold_results);
+				reset_tabela(model_Threshold);
 			}
 
 		});
@@ -268,6 +271,7 @@ public class GUI extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				new Avaliador_Thresholds(Integer.parseInt(TF_LOC.getText()), Integer.parseInt(TF_CYCLO.getText()), Integer.parseInt(TF_ATFD.getText()), Double.parseDouble(TF_LAA.getText()), model, model_Threshold_results , String.valueOf(CB_OL.getSelectedItem()));
 				new Comparador_is_long_method_Thresholds(model, model_Threshold_results, model_Threshold);
+				preenche_tabela_final(model, model_Threshold_results, model_Results);
 			}
 		});
 
@@ -423,6 +427,17 @@ public class GUI extends JFrame {
 			model.removeRow(i);
 		}
 
+	}
+	
+	private void preenche_tabela_final(DefaultTableModel excel, DefaultTableModel threshold, DefaultTableModel resultados) {
+		for (int i = 0; i < excel.getRowCount(); i++) {
+			String[] info = new String[4];
+			info[0] = String.valueOf(excel.getValueAt(i, 0));
+			info[1] = String.valueOf(excel.getValueAt(i, 9));
+			info[2] = String.valueOf(excel.getValueAt(i, 10));
+			info[3] = String.valueOf(threshold.getValueAt(i, 1));
+			resultados.addRow(info);
+		}
 	}
 
 
