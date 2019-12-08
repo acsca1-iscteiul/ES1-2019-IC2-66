@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,6 +33,11 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import ferramentas.Avaliador_Thresholds;
+import ferramentas.Comparador_is_long_method;
+import ferramentas.Comparador_is_long_method_Thresholds;
+
 import javax.swing.JScrollPane;
 import java.awt.ScrollPane;
 import javax.swing.JTabbedPane;
@@ -98,6 +104,7 @@ public class GUI extends JFrame {
 		JButton botao_iniciar = new JButton("Iniciar");
 		botao_iniciar.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 
+
 		JLabel label_OL = new JLabel("Operador L\u00F3gico:");
 		label_OL.setFont(new Font("Verdana Pro Black", Font.PLAIN, 15));
 
@@ -131,6 +138,10 @@ public class GUI extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 
+				if(model.getRowCount()>0)
+					reset_tabela(model);
+
+
 				File excelFile;
 				FileInputStream excelFIS = null;
 				BufferedInputStream excelBIS = null;
@@ -163,16 +174,17 @@ public class GUI extends JFrame {
 
 						// looping pelas linhas e colunas
 						boolean first_line=true;
-						for (int row = 0; row < excelSheet.getLastRowNum(); row++) {
+						for (int row = 0; row <= excelSheet.getLastRowNum(); row++) {
 							XSSFRow excelRow = excelSheet.getRow(row);
 							XSSFCell[] cells = new XSSFCell[excelRow.getLastCellNum()];
 							for(int i=0; i<excelRow.getLastCellNum(); i++) {
 								cells[i]=excelRow.getCell(i);
 							}
 							if(first_line) {
-								for (XSSFCell xssfCell : cells) {
-									model.addColumn(xssfCell);
-								}
+								//								for (XSSFCell xssfCell : cells) {
+								//									model.addColumn(xssfCell);
+								//								}
+								model.setColumnIdentifiers(cells);
 								first_line=false;
 							}
 							else
@@ -204,6 +216,8 @@ public class GUI extends JFrame {
 						}
 					}
 				}
+				new Comparador_is_long_method(model, model_iPlasma, 9).start();
+				new Comparador_is_long_method(model, model_PMD, 10).start();
 			}
 
 		});
@@ -248,132 +262,141 @@ public class GUI extends JFrame {
 
 		JScrollPane scrollPane_Thresholds = new JScrollPane();
 
+		botao_iniciar.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new Avaliador_Thresholds(Integer.parseInt(TF_LOC.getText()), Integer.parseInt(TF_CYCLO.getText()), Integer.parseInt(TF_ATFD.getText()), Double.parseDouble(TF_LAA.getText()), model, model_Threshold_results , String.valueOf(CB_OL.getSelectedItem()));
+				new Comparador_is_long_method_Thresholds(model, model_Threshold_results, model_Threshold);
+			}
+		});
+
 		GroupLayout gl_contentPane_2 = new GroupLayout(contentPane_2);
 		gl_contentPane_2.setHorizontalGroup(
-			gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+				gl_contentPane_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane_2.createSequentialGroup()
-					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane_2.createSequentialGroup()
-							.addComponent(label_ficheiro, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(botao_pesquisar, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
-							.addGap(140))
-						.addGroup(gl_contentPane_2.createSequentialGroup()
-							.addGap(12)
-							.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
-							.addPreferredGap(ComponentPlacement.RELATED)))
-					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.TRAILING)
-						.addGroup(gl_contentPane_2.createSequentialGroup()
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING, false)
+						.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(21)
-									.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(gl_contentPane_2.createSequentialGroup()
-											.addComponent(label_LOC)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(TF_LOC, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_contentPane_2.createSequentialGroup()
-											.addComponent(label_ATFD)
-											.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-											.addComponent(TF_ATFD, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)))
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(gl_contentPane_2.createSequentialGroup()
-											.addComponent(label_CYCLO, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(TF_CYCLO, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_contentPane_2.createSequentialGroup()
-											.addComponent(label_LAA)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(TF_LAA, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE))))
+										.addComponent(label_ficheiro, GroupLayout.PREFERRED_SIZE, 81, GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(botao_pesquisar, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE)
+										.addGap(140))
 								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(12)
-									.addComponent(label_OL)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(CB_OL, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)))
-							.addGap(9))
-						.addGroup(gl_contentPane_2.createSequentialGroup()
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblThreshold)
+										.addGap(12)
+										.addComponent(scrollPane_1, GroupLayout.DEFAULT_SIZE, 402, Short.MAX_VALUE)
+										.addPreferredGap(ComponentPlacement.RELATED)))
+						.addGroup(gl_contentPane_2.createParallelGroup(Alignment.TRAILING)
 								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(21)
-									.addComponent(lbl_Pmd))
+										.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING, false)
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(21)
+														.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING, false)
+																.addGroup(gl_contentPane_2.createSequentialGroup()
+																		.addComponent(label_LOC)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(TF_LOC, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))
+																.addGroup(gl_contentPane_2.createSequentialGroup()
+																		.addComponent(label_ATFD)
+																		.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																		.addComponent(TF_ATFD, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)))
+														.addPreferredGap(ComponentPlacement.RELATED)
+														.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING, false)
+																.addGroup(gl_contentPane_2.createSequentialGroup()
+																		.addComponent(label_CYCLO, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(TF_CYCLO, GroupLayout.PREFERRED_SIZE, 117, GroupLayout.PREFERRED_SIZE))
+																.addGroup(gl_contentPane_2.createSequentialGroup()
+																		.addComponent(label_LAA)
+																		.addPreferredGap(ComponentPlacement.RELATED)
+																		.addComponent(TF_LAA, GroupLayout.PREFERRED_SIZE, 169, GroupLayout.PREFERRED_SIZE))))
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(12)
+														.addComponent(label_OL)
+														.addPreferredGap(ComponentPlacement.UNRELATED)
+														.addComponent(CB_OL, GroupLayout.PREFERRED_SIZE, 73, GroupLayout.PREFERRED_SIZE)))
+										.addGap(9))
 								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(8)
-									.addComponent(lbl_iPlasma)))
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(32)
-									.addGroup(gl_contentPane_2.createParallelGroup(Alignment.TRAILING, false)
-										.addComponent(scrollPane_3, 0, 0, Short.MAX_VALUE)
-										.addComponent(scrollPane_4, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)))
-								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(33)
-									.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 292, GroupLayout.PREFERRED_SIZE)))))
-					.addGap(9))
+										.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+												.addComponent(lblThreshold)
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(21)
+														.addComponent(lbl_Pmd))
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(8)
+														.addComponent(lbl_iPlasma)))
+										.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(32)
+														.addGroup(gl_contentPane_2.createParallelGroup(Alignment.TRAILING, false)
+																.addComponent(scrollPane_3, 0, 0, Short.MAX_VALUE)
+																.addComponent(scrollPane_4, GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE)))
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(33)
+														.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 292, GroupLayout.PREFERRED_SIZE)))))
+						.addGap(9))
 				.addGroup(gl_contentPane_2.createSequentialGroup()
-					.addComponent(botao_iniciar, GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
-					.addContainerGap())
+						.addComponent(botao_iniciar, GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
+						.addContainerGap())
 				.addGroup(gl_contentPane_2.createSequentialGroup()
-					.addGap(13)
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
-					.addGap(42)
-					.addComponent(scrollPane_Thresholds, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
+						.addGap(13)
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 484, Short.MAX_VALUE)
+						.addGap(42)
+						.addComponent(scrollPane_Thresholds, GroupLayout.PREFERRED_SIZE, 291, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap())
+				);
 		gl_contentPane_2.setVerticalGroup(
-			gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+				gl_contentPane_2.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane_2.createSequentialGroup()
-					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.BASELINE)
-						.addComponent(label_ficheiro, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-						.addComponent(TF_LOC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(label_LOC)
-						.addComponent(botao_pesquisar)
-						.addComponent(label_CYCLO)
-						.addComponent(TF_CYCLO, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane_2.createSequentialGroup()
-							.addGap(13)
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.BASELINE)
-								.addComponent(label_ATFD)
-								.addComponent(TF_ATFD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(label_LAA)
-								.addComponent(TF_LAA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.BASELINE)
-								.addComponent(label_OL)
-								.addComponent(CB_OL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane_2.createParallelGroup(Alignment.BASELINE)
+								.addComponent(label_ficheiro, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+								.addComponent(TF_LOC, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(label_LOC)
+								.addComponent(botao_pesquisar)
+								.addComponent(label_CYCLO)
+								.addComponent(TF_CYCLO, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(33)
-									.addComponent(lbl_iPlasma))
+										.addGap(13)
+										.addGroup(gl_contentPane_2.createParallelGroup(Alignment.BASELINE)
+												.addComponent(label_ATFD)
+												.addComponent(TF_ATFD, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+												.addComponent(label_LAA)
+												.addComponent(TF_LAA, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_contentPane_2.createParallelGroup(Alignment.BASELINE)
+												.addComponent(label_OL)
+												.addComponent(CB_OL, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(33)
+														.addComponent(lbl_iPlasma))
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(18)
+														.addComponent(scrollPane_4, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)))
+										.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(50)
+														.addComponent(lbl_Pmd))
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(30)
+														.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
+										.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(40)
+														.addComponent(lblThreshold))
+												.addGroup(gl_contentPane_2.createSequentialGroup()
+														.addGap(26)
+														.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))))
 								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(18)
-									.addComponent(scrollPane_4, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)))
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(50)
-									.addComponent(lbl_Pmd))
-								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(30)
-									.addComponent(scrollPane_3, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)))
-							.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(40)
-									.addComponent(lblThreshold))
-								.addGroup(gl_contentPane_2.createSequentialGroup()
-									.addGap(26)
-									.addComponent(scrollPane_2, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE))))
-						.addGroup(gl_contentPane_2.createSequentialGroup()
-							.addGap(28)
-							.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-					.addGap(18)
-					.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPane_Thresholds, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE))
-					.addGap(13)
-					.addComponent(botao_iniciar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-		);
+										.addGap(28)
+										.addComponent(scrollPane_1, GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+						.addGap(18)
+						.addGroup(gl_contentPane_2.createParallelGroup(Alignment.LEADING)
+								.addComponent(scrollPane_Thresholds, GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE)
+								.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 124, GroupLayout.PREFERRED_SIZE))
+						.addGap(13)
+						.addComponent(botao_iniciar, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+				);
 
 		table_Threshold_results = new JTable(model_Threshold_results);
 		scrollPane_Thresholds.setViewportView(table_Threshold_results);
@@ -394,5 +417,14 @@ public class GUI extends JFrame {
 		tabela_excel.setFont(new Font("Verdana Pro", Font.PLAIN, 15));
 		contentPane_2.setLayout(gl_contentPane_2);
 	}
+
+	private void reset_tabela(DefaultTableModel model) {
+		for (int i = model.getRowCount()-1; i >=0; i--) {
+			model.removeRow(i);
+		}
+
+	}
+
+
 }
 
