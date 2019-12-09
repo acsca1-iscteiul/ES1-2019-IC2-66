@@ -15,18 +15,21 @@ public class Comparador_is_long_method_Thresholds {
 	}
 	
 	private void preencher_tabela() {
+		if(destino.getRowCount()>0) {
+			destino.removeRow(0);
+		}
 		int dci=0, dii=0, adci=0, adii=0;
 		for (int i = 0; i < excel.getRowCount(); i++) {
-			if(String.valueOf(excel.getValueAt(i, 8)).equals("TRUE") && String.valueOf(threshold.getValueAt(i, 1)).equals("true") ) {
+			if(String.valueOf(excel.getValueAt(i, 8)).equals("TRUE") && String.valueOf(threshold.getValueAt(i, 1)).equals("TRUE") ) {
 				dci++;
 			}
-			if(String.valueOf(excel.getValueAt(i, 8)).equals("TRUE") && String.valueOf(threshold.getValueAt(i, 1)).equals("false") ) {
+			if(String.valueOf(excel.getValueAt(i, 8)).equals("TRUE") && String.valueOf(threshold.getValueAt(i, 1)).equals("FALSE") ) {
 				dii++;
 			}
-			if(String.valueOf(excel.getValueAt(i, 8)).equals("FALSE") && String.valueOf(threshold.getValueAt(i, 1)).equals("false") ) {
+			if(String.valueOf(excel.getValueAt(i, 8)).equals("FALSE") && String.valueOf(threshold.getValueAt(i, 1)).equals("FALSE") ) {
 				adci++;
 			}
-			if(String.valueOf(excel.getValueAt(i, 8)).equals("FALSE") && String.valueOf(threshold.getValueAt(i, 1)).equals("true") ) {
+			if(String.valueOf(excel.getValueAt(i, 8)).equals("FALSE") && String.valueOf(threshold.getValueAt(i, 1)).equals("TRUE") ) {
 				adii++;
 			}
 		}
