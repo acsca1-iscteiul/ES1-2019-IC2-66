@@ -12,6 +12,7 @@ public class Avaliador_Thresholds {
 	private String op;
 
 
+
 	public Avaliador_Thresholds(int loc, int cyclo, int atfd, double laa, DefaultTableModel origem, DefaultTableModel destino, String op) {
 		this.loc = loc;
 		this.cyclo = cyclo;
