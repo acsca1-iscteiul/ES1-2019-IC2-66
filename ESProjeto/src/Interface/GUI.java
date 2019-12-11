@@ -56,6 +56,8 @@ public class GUI extends JFrame {
 	private JTable table_Threshold;
 	private JTable table_Results;
 	private JTable table_Threshold_results;
+	private File excelFile;
+	
 
 	/**
 	 * Launch the application.
@@ -143,7 +145,6 @@ public class GUI extends JFrame {
 					reset_tabela(model);
 
 
-				File excelFile;
 				FileInputStream excelFIS = null;
 				BufferedInputStream excelBIS = null;
 				XSSFWorkbook excelJTableImport = null;
@@ -477,5 +478,14 @@ public class GUI extends JFrame {
 			resultados.addRow(info);
 		}
 	}
+
+	public File getExcelFile() {
+		return excelFile;
+	}
+
+	public void setExcelFile(File excelFile) {
+		this.excelFile = excelFile;
+	}
+	
 }
 

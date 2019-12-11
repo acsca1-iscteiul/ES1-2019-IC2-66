@@ -25,7 +25,7 @@ public class Avaliador_Thresholds {
 	}
 
 
-	private void preenche_tabela() {
+	public void preenche_tabela() {
 		
 
 		for (int i = 0; i < origem.getRowCount(); i++) {
