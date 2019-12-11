@@ -29,8 +29,8 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 	public void setUp() throws Exception {
 		gui = new GUI();
 
-		int loc1 = 50;
-		int loc2 = 30;
+		int loc1 =50;
+		int loc2 =30;
 		int loc3=25;
 		int loc4=2;
 
@@ -47,22 +47,39 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 		int laa1 = 120;
 		int laa2 = 45;
 		int laa3 = 20;
-		int laa4 = 60;
+		double laa4 = 1.2;
 
 		origem = gui.getModel(); 
 		destino = new DefaultTableModel(); // DefaultTableModel leva um ficheiro excel XSSFWorkbook 
 		
 		origem.addColumn("M_ID");
-		origem.addColumn("is_long_Method");
+		origem.addColumn("package");
+		origem.addColumn("class");
+		origem.addColumn("method");
+		origem.addColumn("loc");
+		origem.addColumn("cyclo");
+		origem.addColumn("atfd");
+		origem.addColumn("laa");
+		origem.addColumn("is_long_method");
+		origem.addColumn("iPlasma");
+		origem.addColumn("PMD");
 		origem.addColumn("is_feature_envy");
+		
+		String [] dados1 = {"1","fat","DocumentParseFixture","Output()", "3","1","0","1","FALSE","FALSE","FALSO","FALSO"};
+		String [] dados2 = {"1","fat","DocumentParseFixture","Output()", "45","32","34","90","FALSE","FALSE","FALSO","FALSO"};
+		String [] dados3 = {"1","fat","DocumentParseFixture","Output()", "30","2","70","30","FALSE","FALSE","FALSO","FALSO"};
+		String [] dados4 = {"1","fat","DocumentParseFixture","Output()", "3","1","0","1","FALSE","FALSE","FALSO","FALSO"};
+		origem.addRow(dados1);
+		origem.addRow(dados2);
+		origem.addRow(dados3);
+		origem.addRow(dados4);
 
 		String op1 = "AND";
 		String op2 = "OR";
-		String op3 = " ";
 
 		avaliadorT1 = new Avaliador_Thresholds(loc1, cyclo1, atfd1, laa1, origem, destino, op1);
 		avaliadorT2 = new Avaliador_Thresholds(loc2, cyclo2, atfd2, laa2, origem, destino, op2);
-		avaliadorT3 = new Avaliador_Thresholds(loc3, cyclo3, atfd3, laa3, origem, destino, op3);
+		avaliadorT3 = new Avaliador_Thresholds(loc3, cyclo3, atfd3, laa3, origem, destino, op1);
 		avaliadorT4 = new Avaliador_Thresholds(loc4, cyclo4, atfd4, laa4, origem, destino, op2);
 		
 	}
@@ -79,6 +96,7 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 		assertTrue(avaliadorT1.isInteger("1"));
 		assertFalse(avaliadorT1.isInteger(""));
 		assertFalse(avaliadorT1.isInteger("-"));
+		assertTrue(avaliadorT1.isInteger("-1"));
 		
 	}
 }
