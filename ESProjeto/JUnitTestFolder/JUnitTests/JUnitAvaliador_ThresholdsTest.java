@@ -4,6 +4,10 @@ package JUnitTests;
 
 import javax.swing.table.DefaultTableModel;
 import org.junit.jupiter.api.Test;
+
+import Interface.GUI;
+
+import org.junit.Assert;
 import org.junit.Before;
 
 import ferramentas.Avaliador_Thresholds;
@@ -19,11 +23,11 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 	DefaultTableModel origem;
 	DefaultTableModel destino;
 
-	//	private GUI gui;
+	private GUI gui;
 
 	@Before
 	public void setUp() throws Exception {
-		//		gui = new GUI();
+		gui = new GUI();
 
 		int loc1 = 50;
 		int loc2 = 30;
@@ -45,8 +49,12 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 		int laa3 = 20;
 		int laa4 = 60;
 
+		origem = gui.getModel(); 
 		destino = new DefaultTableModel(); // DefaultTableModel leva um ficheiro excel XSSFWorkbook 
-		origem = new DefaultTableModel();
+		
+		origem.addColumn("M_ID");
+		origem.addColumn("is_long_Method");
+		origem.addColumn("is_feature_envy");
 
 		String op1 = "AND";
 		String op2 = "OR";
@@ -61,15 +69,16 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 
 	@Test	
 	public void test() {
-//		origem.addColumn("M_ID");
-//		origem.addColumn("is_long_Method");
-//		origem.addColumn("is_feature_envy");
-//		origem.addColumn("M_ID");
-//		origem.addColumn("iPlasma");
-//		origem.addColumn("PMD");
-//		origem.addColumn("Thresholds");
 		
-
+		assertEquals(avaliadorT1.isInteger("ola"), avaliadorT2.isInteger("ola"));
+		assertEquals(avaliadorT1.isInteger("ola"), avaliadorT2.isInteger("-"));
+		assertEquals(avaliadorT1.isNumeric(null),avaliadorT2.isNumeric(null));
+		assertEquals(avaliadorT1.isNumeric("1000.00.00"),avaliadorT2.isNumeric("1000.00.00"));
+		assertEquals(avaliadorT1.isNumeric("1"),avaliadorT2.isNumeric("1"));
+		assertEquals(avaliadorT1.isNumeric("1"),avaliadorT2.isNumeric("1"));
+		assertTrue(avaliadorT1.isInteger("1"));
+		assertFalse(avaliadorT1.isInteger(""));
+		assertFalse(avaliadorT1.isInteger("-"));
 		
 	}
 }

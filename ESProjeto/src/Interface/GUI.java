@@ -58,6 +58,14 @@ public class GUI extends JFrame {
 	private JTable table_Threshold_results;
 	private File excelFile;
 	
+	private DefaultTableModel model;
+	private DefaultTableModel model_iPlasma;
+	private DefaultTableModel model_PMD;
+	private DefaultTableModel model_Threshold;
+	private DefaultTableModel model_Threshold_results;
+	private DefaultTableModel model_Results;
+	
+	
 
 	/**
 	 * Launch the application.
@@ -116,7 +124,7 @@ public class GUI extends JFrame {
 		CB_OL.setForeground(Color.BLACK);
 		CB_OL.setModel(new DefaultComboBoxModel(new String[] {"AND", "OR"}));
 
-		DefaultTableModel model = new DefaultTableModel();
+		model = new DefaultTableModel();
 		DefaultTableModel model_iPlasma = new DefaultTableModel();
 		DefaultTableModel model_PMD = new DefaultTableModel();
 		DefaultTableModel model_Threshold = new DefaultTableModel();
@@ -140,7 +148,6 @@ public class GUI extends JFrame {
 		botao_pesquisar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-
 				if(model.getRowCount()>0)
 					reset_tabela(model);
 
@@ -223,8 +230,9 @@ public class GUI extends JFrame {
 				reset_tabela(model_Results);
 				reset_tabela(model_Threshold_results);
 				reset_tabela(model_Threshold);
+				
+			
 			}
-
 		});
 		botao_pesquisar.setFont(new Font("Verdana Pro", Font.PLAIN, 16));
 		botao_pesquisar.addActionListener(new ActionListener() {
@@ -479,13 +487,14 @@ public class GUI extends JFrame {
 		}
 	}
 
-	public File getExcelFile() {
-		return excelFile;
+	public DefaultTableModel getModel() {
+		return model;
 	}
 
-	public void setExcelFile(File excelFile) {
-		this.excelFile = excelFile;
+	public void setModel(DefaultTableModel model) {
+		this.model = model;
 	}
+
 	
 }
 
