@@ -15,18 +15,19 @@ import junit.framework.TestCase;
 
 public class JUnitAvaliador_ThresholdsTest extends TestCase{
 
+	private GUI gui;
+	
+	private DefaultTableModel origem;
+	private DefaultTableModel destino;
+
 	private Avaliador_Thresholds avaliadorT1;
 	private Avaliador_Thresholds avaliadorT2;
 	private Avaliador_Thresholds avaliadorT3;
 	private Avaliador_Thresholds avaliadorT4;
 
-	DefaultTableModel origem;
-	DefaultTableModel destino;
-
-	private GUI gui;
-
 	@Before
 	public void setUp() throws Exception {
+		
 		gui = new GUI();
 
 		int loc1 =50;
@@ -50,7 +51,7 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 		double laa4 = 1.2;
 
 		origem = gui.getModel(); 
-		destino = new DefaultTableModel(); // DefaultTableModel leva um ficheiro excel XSSFWorkbook 
+		destino = new DefaultTableModel(); 
 		
 		origem.addColumn("M_ID");
 		origem.addColumn("package");
@@ -69,6 +70,7 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 		String [] dados2 = {"1","fat","DocumentParseFixture","Output()", "45","32","34","90","FALSE","FALSE","FALSO","FALSO"};
 		String [] dados3 = {"1","fat","DocumentParseFixture","Output()", "30","2","70","30","FALSE","FALSE","FALSO","FALSO"};
 		String [] dados4 = {"1","fat","DocumentParseFixture","Output()", "3","1","0","1","FALSE","FALSE","FALSO","FALSO"};
+		
 		origem.addRow(dados1);
 		origem.addRow(dados2);
 		origem.addRow(dados3);
@@ -87,11 +89,10 @@ public class JUnitAvaliador_ThresholdsTest extends TestCase{
 	@Test	
 	public void test() {
 		
-		assertEquals(avaliadorT1.isInteger("ola"), avaliadorT2.isInteger("ola"));
-		assertEquals(avaliadorT1.isInteger("ola"), avaliadorT2.isInteger("-"));
+		assertEquals(avaliadorT1.isInteger("testeES"), avaliadorT2.isInteger("testeES"));
+		assertEquals(avaliadorT1.isInteger("testeES"), avaliadorT2.isInteger("-"));
 		assertEquals(avaliadorT1.isNumeric(null),avaliadorT2.isNumeric(null));
 		assertEquals(avaliadorT1.isNumeric("1000.00.00"),avaliadorT2.isNumeric("1000.00.00"));
-		assertEquals(avaliadorT1.isNumeric("1"),avaliadorT2.isNumeric("1"));
 		assertEquals(avaliadorT1.isNumeric("1"),avaliadorT2.isNumeric("1"));
 		assertTrue(avaliadorT1.isInteger("1"));
 		assertFalse(avaliadorT1.isInteger(""));
